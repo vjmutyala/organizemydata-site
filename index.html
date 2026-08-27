@@ -110,6 +110,7 @@
 
     <div class="h2">Make an offer</div>
     <form class="offer" id="offer" novalidate>
+      <input type="text" id="hp_company" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute!important;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none" />
       <div class="row">
         <input class="email" type="email" id="email" placeholder="you@email.com" required aria-label="Your email" />
         <input class="amt" type="text" id="amount" placeholder="Your best offer (USD)" aria-label="Your offer amount" />
@@ -140,10 +141,12 @@
   const em = document.getElementById("emailme");
   em.href = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent("Interested in " + SOURCE) + "&body=" + encodeURIComponent("Hi Vijay,\n\nI'm interested in " + SOURCE + ".\n\nMy offer (USD): \nWho I am / intended use: \n");
 
+  const LOADED_AT = Date.now();
   const form = document.getElementById("offer");
   const ok = document.getElementById("ok");
   form.addEventListener("submit", async function(e){
     e.preventDefault();
+    if(document.getElementById("hp_company").value || (Date.now()-LOADED_AT)<2500){ form.style.display="none"; ok.style.display="block"; return; }
     const email = document.getElementById("email").value.trim();
     if(!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ document.getElementById("email").focus(); return; }
     const payload = {
